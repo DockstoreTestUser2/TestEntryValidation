@@ -1,17 +1,19 @@
-cwlVersion: "cwl:draft3.0"
-class: Workflow
 
+class: CommandLineTool
+cwlVersion: cwl:draft-3
+baseCommand: "true"
+requirements:
+  - class: CreateFileRequirement
+    fileDef:
+      - filename: $(inputs.newname)
+        fileContent: $(inputs.srcfile)
 inputs:
-  input_file: File
-
-outputs:
-  output_file:
+  - id: srcfile
     type: File
-    outputSource: md5sum/output_file
-
-steps:
-  md5sum:
-    run: validTool.cwl
-    in:
-      input_file: input_file
-    out: [output_file]
+  - id: newname
+    type: string
+outputs:
+  - id: outfile
+    type: File
+    outputBinding:
+      glob: $(inputs.newname)
